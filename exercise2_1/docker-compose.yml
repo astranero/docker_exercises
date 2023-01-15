@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  webservice:
+    image: devopsdockeruh/simple-web-service
+    volumes:
+      - ${PWD}/upload/text.log/:/usr/src/app/text.log
