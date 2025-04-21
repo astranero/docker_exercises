@@ -1,0 +1,61 @@
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+    - 80:80
+    depends_on:
+    - backend
+    - fronted
+    networks:
+    - fronted
+    - backend
+  fronted:
+    build: 
+      context: ../exercise1_12
+      args:
+        REACT_APP_BACKEND_URL: "http://localhost/api"
+    networks:
+      - fronted
+      - backend
+  backend:
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DATABASE: "postgres"
+      REQUEST_ORIGIN: "http://localhost:5000"
+      REDIS_HOST: "redis"
+    depends_on:
+      - db
+    build: ../exercise1_13
+    networks:
+      - fronted
+      - backend
+  redis:
+    image: redis
+    networks:
+      - backend
+  
+  db:
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DATABASE: "postgres"
+    networks:
+      - backend
+
+volumes:
+  database:
+
+networks:
+  fronted:
+    driver: bridge
+  backend:
+    driver: bridge
