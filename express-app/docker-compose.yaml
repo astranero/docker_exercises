@@ -4,8 +4,8 @@ services:
     ports:
     - 8080:8080
     labels:
-    - "com.containrrr.watchtower.enable=true"
-    - "com.containrrr.watchtower.cleanup=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.cleanup=true"
 
   watchtower:
     image: containrrr/watchtower
@@ -13,9 +13,9 @@ services:
       - WATCHTOWER_POLL_INTERVAL=60
       - WATCHTOWER_CLEANUP
       - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     container_name: watchtower
     depends_on:
       - express
-    command:  --cleanup --label-enable
