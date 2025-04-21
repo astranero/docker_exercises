@@ -2,7 +2,7 @@ services:
   express:
     image: astranero/express-app:latest
     ports:
-    - 3000:3000
+    - 8080:8080
     labels:
     - "com.containrrr.watchtower.enable=true"
     - "com.containrrr.watchtower.cleanup=true"
@@ -18,4 +18,4 @@ services:
     container_name: watchtower
     depends_on:
       - express
-    command:  --cleanup --label-enabled
+    command:  --cleanup --label-enable
